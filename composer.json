@@ -1,0 +1,16 @@
+{
+    "name": "hp/my-laravel-app",
+    "description": "Laraver Weblog Project",
+    "autoload": {
+        "psr-4": {
+            "Hp\\MyLaravelApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ehsan-Pazhman",
+            "email": "ehsanpazhman@gmail.com"
+        }
+    ],
+    "require": {}
+}
