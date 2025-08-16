@@ -1,9 +1,9 @@
 {
     "name": "hp/my-laravel-app",
-    "description": "Laraver Weblog Project",
+    "description": "Laravel Weblog Project",
     "autoload": {
         "psr-4": {
-            "Hp\\MyLaravelApp\\": "src/"
+            "App\\": "app/"
         }
     },
     "authors": [
