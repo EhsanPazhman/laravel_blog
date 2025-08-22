@@ -1,0 +1,35 @@
+@extends('frontend.layouts.master')
+@section('content')
+    <!-- Register Form -->
+ <div class="flex-grow container mx-auto my-8 px-4">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-md mx-auto">
+            <h2 class="text-2xl font-semibold text-blue-300 mb-6">Register</h2>
+            <div
+                class="bg-gradient-to-r from-red-500 to-red-700 text-white p-4 rounded-lg mb-6 opacity-0 transition-opacity duration-500 hidden">
+                Registration failed!
+            </div>
+            <form action="register.html" method="POST">
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-300">Name</label>
+                    <input type="text" name="name" id="name"
+                        class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-300">Email</label>
+                    <input type="email" name="email" id="email"
+                        class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-300">Password</label>
+                    <input type="password" name="password" id="password"
+                        class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        required>
+                </div>
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg w-full transition-colors duration-200">Register</button>
+            </form>
+        </div>
+    </div>
+@endsection
