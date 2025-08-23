@@ -16,7 +16,7 @@
                 <a href="index" class="hover:text-blue-300 transition-colors duration-200">Home</a>
                 <a href="/login" class="hover:text-blue-300 transition-colors duration-200">Login</a>
                 <a href="/register" class="hover:text-blue-300 transition-colors duration-200">Register</a>
-                <a href="/dashboard" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
+                <a href="/admin" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
             </div>
         </div>
     </nav>
