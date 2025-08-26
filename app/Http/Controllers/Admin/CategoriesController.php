@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Categories\StoreRequest;
 use App\Http\Requests\Admin\Categories\UpdateRequest;
-use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
@@ -37,7 +37,7 @@ class CategoriesController extends Controller
         $category = Category::find($category_id);
         return view('frontend.admin.categories.edit-category', compact('category'));
     }
-    public function update($category_id, UpdateRequest $request)
+    public function update(UpdateRequest $request,$category_id)
     {
         $category = Category::find($category_id);
         $valdatedData = $request->validated();

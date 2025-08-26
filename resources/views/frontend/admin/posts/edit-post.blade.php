@@ -3,6 +3,9 @@
     <!-- Edit Post Form -->
     <div class="flex-grow container mx-auto my-8 px-4 flex flex-wrap -mx-3">
         <div class="container mx-auto my-8 px-4">
+            <a href="/admin"
+                class="bg-red-600 hover:bg-green-500 text-white p-3 rounded-lg transition-colors duration-200">Return to home
+                page</a>
             <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto">
                 <h2 class="text-2xl font-semibold text-blue-300 mb-6">Edit Post</h2>
                 <form action="edit-post.html" method="POST" enctype="multipart/form-data">
