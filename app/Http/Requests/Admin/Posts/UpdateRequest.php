@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Admin\Posts;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +23,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:3|max:128|unique:posts,title',
-            'category_id' => 'required|exists:categories,id',
-            'content' => 'required|string|min:20',
-            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'title' => 'sometimes|string|min:3',
+            'category_id' => 'sometimes|exists:categories,id',
+            'content'     => 'sometimes|string|min:20',
+            'image'       => 'sometimes|image|mimes:png,jpg,jpeg',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Posts\UpdateRequest;
 use App\Http\Requests\Admin\Posts\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
@@ -23,8 +24,8 @@ class PostsController extends Controller
         $validatedData = $request->validated();
         $admin = User::where('role', 'admin')->first();
         $path = 'images/' . $validatedData['image']->getClientOriginalName();
-         Storage::disk('public_storage')->put($path, File::get($validatedData['image']));
-        $createdPost = Post::crgeate([
+        Storage::disk('public_storage')->put($path, File::get($validatedData['image']));
+        $createdPost = Post::create([
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
             'user_id' => $admin->id,
@@ -35,5 +36,38 @@ class PostsController extends Controller
             return back()->with('failed', 'Can not create post!');
         }
         return back()->with('success', 'Post created successfully.');
+    }
+    public function edit($post_id)
+    {
+        $categories = Category::all();
+        $post = Post::find($post_id);
+        return view('frontend.admin.posts.edit-post', compact('post', 'categories'));
+    }
+    public function update(UpdateRequest $request, $post_id)
+    {
+        $post = Post::find($post_id);
+        $validatedData = $request->validated();
+        if ($request->hasFile('image')) {
+            if ($post->image && Storage::disk('public_storage')->exists($post->image)) {
+                Storage::disk('public_storage')->delete($post->image);
+            }
+            $path = 'images/' . $validatedData['image']->getClientOriginalName();
+            Storage::disk('public_storage')->put($path, File::get($validatedData['image']));
+            $validatedData['image'] = $path;
+        }
+        $updated = $post->update($validatedData);
+        if (!$updated) {
+            return back()->with('faield', 'Post Not Updated!');
+        }
+        return back()->with('success', 'Post  Updated Successfully.');
+    }
+    public function delete($post_id)
+    {
+        $post = Post::find($post_id);
+        if ($post->image && Storage::disk('public_storage')->exists($post->image)) {
+            Storage::disk('public_storage')->delete($post->image);
+        }
+        $post->delete();
+        return back()->with('success', 'Post deleted!');
     }
 }
