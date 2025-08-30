@@ -13,8 +13,8 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight">My Blog - Admin</h1>
             <div class="space-x-6">
-                <a href="index.html" class="hover:text-blue-300 transition-colors duration-200">Home</a>
-                <a href="login.html" class="hover:text-blue-300 transition-colors duration-200">Logout</a>
+                <a href="/" class="hover:text-blue-300 transition-colors duration-200">Home</a>
+                <a href="/login" class="hover:text-blue-300 transition-colors duration-200">Logout</a>
             </div>
         </div>
     </nav>

@@ -1,4 +1,5 @@
 @extends('frontend.layouts.master')
+@section('title', 'edit category')
 @section('content')
     <!-- Edit Category Form -->
     <div class="flex-grow container mx-auto my-8 px-4 flex flex-wrap -mx-3">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Home</title>
+    <title>@yield('title', 'Blog - Home')</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight">My Blog</h1>
             <div class="space-x-6">
-                <a href="index" class="hover:text-blue-300 transition-colors duration-200">Home</a>
+                <a href="/" class="hover:text-blue-300 transition-colors duration-200">Home</a>
                 <a href="/login" class="hover:text-blue-300 transition-colors duration-200">Login</a>
                 <a href="/register" class="hover:text-blue-300 transition-colors duration-200">Register</a>
                 <a href="/admin" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>

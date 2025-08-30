@@ -7,8 +7,9 @@
             <form action="index.html" method="GET">
                 <select name="category" class="p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     <option value="">All Categories</option>
-                    <option value="tech">Technology</option>
-                    <option value="lifestyle">Lifestyle</option>
+                    @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
                 </select>
             </form>
         </div>

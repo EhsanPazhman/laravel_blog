@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
+    public function index()
+    {
+        $categories = Category::all();
+        $posts = Post::all();
+        return view('frontend.index', compact(['categories', 'posts']));
+    }
+    public function show($slug)
+    {
+        $categories = Category::all();
+        $post = Post::where('slug', $slug)->with('category')->firstOrFail();
+        return view('frontend.layouts.post', compact(['categories', 'post']));
+    }
     public function add()
     {
         $categories = Category::all();

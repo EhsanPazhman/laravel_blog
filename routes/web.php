@@ -22,9 +22,8 @@ Route::prefix('admin')->group(function () {
         Route::delete('{post_id}/delete', [PostsController::class, 'delete']);
     });
 });
-Route::get('/', function () {
-    return view('frontend.index');
-});
+Route::get('/', [PostsController::class, 'index']);
+Route::get('/post/{slug}', [PostsController::class, 'show']);
 Route::get('/register', function () {
     return view('frontend.layouts.register');
 });

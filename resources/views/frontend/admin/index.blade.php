@@ -1,4 +1,5 @@
 @extends('frontend.admin.layouts.master')
+@section('title', 'Admin Panel')
 @section('content')
         <!-- Admin Panel -->
     <div class="container mx-auto my-8 px-4">

@@ -1,4 +1,5 @@
 @extends('frontend.layouts.master')
+@section('title', 'add post')
 @section('content')
     <!-- Add Post Form -->
     <div class="container mx-auto my-8 px-4">
