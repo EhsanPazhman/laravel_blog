@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PostsController;
-use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\CommentsController;
+use App\Http\Controllers\Admin\CategoriesController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::prefix('post')->group(function () {
@@ -29,9 +30,8 @@ Route::prefix('admin')->group(function () {
         Route::delete('{post_id}/delete', [PostsController::class, 'delete']);
     });
 });
-Route::get('/register', function () {
-    return view('frontend.layouts.register');
-});
-Route::get('/login', function () {
-    return view('frontend.layouts.login');
-});
+Route::get('/register', [AuthController::class, 'registerForm']);
+Route::get('/login',[AuthController::class, 'loginForm']);
+Route::post('/logout',[AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login',[AuthController::class, 'login']);

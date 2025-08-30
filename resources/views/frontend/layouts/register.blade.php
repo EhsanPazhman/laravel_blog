@@ -4,11 +4,11 @@
  <div class="flex-grow container mx-auto my-8 px-4">
         <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-md mx-auto">
             <h2 class="text-2xl font-semibold text-blue-300 mb-6">Register</h2>
-            <div
-                class="bg-gradient-to-r from-red-500 to-red-700 text-white p-4 rounded-lg mb-6 opacity-0 transition-opacity duration-500 hidden">
-                Registration failed!
+            <div>
+               @include('errors.message')
             </div>
-            <form action="register.html" method="POST">
+            <form action="/register" method="POST">
+                @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-gray-300">Name</label>
                     <input type="text" name="name" id="name"

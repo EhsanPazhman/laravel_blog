@@ -7,7 +7,8 @@
             <div class="bg-gradient-to-r from-red-500 to-red-700 text-white p-4 rounded-lg mb-6 opacity-0 transition-opacity duration-500 hidden">
                 Invalid credentials!
             </div>
-            <form action="login.html" method="POST">
+            <form action="/login" method="POST">
+                @csrf
                 <div class="mb-4">
                     <label for="email" class="block text-gray-300">Email</label>
                     <input type="email" name="email" id="email" class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required>
