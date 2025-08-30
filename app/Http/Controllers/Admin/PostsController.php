@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Posts\UpdateRequest;
 use App\Http\Requests\Admin\Posts\StoreRequest;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,17 +15,12 @@ use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
-    public function index()
-    {
-        $categories = Category::all();
-        $posts = Post::all();
-        return view('frontend.index', compact(['categories', 'posts']));
-    }
     public function show($slug)
     {
         $categories = Category::all();
         $post = Post::where('slug', $slug)->with('category')->firstOrFail();
-        return view('frontend.layouts.post', compact(['categories', 'post']));
+        $comments = Comment::with('user')->where('post_id', $post->id)->get();
+        return view('frontend.layouts.post', compact(['categories', 'post', 'comments']));
     }
     public function add()
     {
