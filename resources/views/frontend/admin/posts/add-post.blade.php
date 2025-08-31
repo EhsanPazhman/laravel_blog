@@ -3,14 +3,14 @@
 @section('content')
     <!-- Add Post Form -->
     <div class="container mx-auto my-8 px-4">
-        <a href="/admin"
+        <a href="{{ route('admin.dashboard') }}"
             class="bg-red-600 hover:bg-green-500 text-white p-3 rounded-lg transition-colors duration-200">Return to
             home
             page</a>
         <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto">
             @include('errors.message')
             <h2 class="text-2xl font-semibold text-blue-300 mb-6">Add New Post</h2>
-            <form action="/admin/posts/store" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="title" class="block text-gray-300">Title</label>

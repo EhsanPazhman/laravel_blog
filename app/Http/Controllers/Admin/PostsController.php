@@ -20,9 +20,9 @@ class PostsController extends Controller
         $categories = Category::all();
         $post = Post::where('slug', $slug)->with('category')->firstOrFail();
         $comments = Comment::with('user')->where('post_id', $post->id)->get();
-        return view('frontend.layouts.post', compact(['categories', 'post', 'comments']));
+        return view('frontend.admin.posts.show', compact(['categories', 'post', 'comments']));
     }
-    public function add()
+    public function create()
     {
         $categories = Category::all();
         return view('frontend.admin.posts.add-post', compact('categories'));
@@ -69,7 +69,7 @@ class PostsController extends Controller
         }
         return back()->with('success', 'Post  Updated Successfully.');
     }
-    public function delete($post_id)
+    public function destroy($post_id)
     {
         $post = Post::find($post_id);
         if ($post->image && Storage::disk('public_storage')->exists($post->image)) {

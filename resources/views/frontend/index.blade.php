@@ -11,7 +11,7 @@
                     <h2 class="text-xl font-semibold text-blue-300">{{ $post->title }}</h2>
                     <p class="text-gray-400 text-sm">Category: {{ $post->category->name }}</p>
                     <p class="text-gray-300 mt-2 line-clamp-3">{{ substr($post->content, 0, 20) }}</p>
-                    <a href="/post/<?= $post->slug ?>"
+                    <a href="{{ route('post.show', $post->slug) }}"
                         class="text-blue-400 hover:text-blue-300 transition-colors duration-200 mt-4 block">Read
                         More</a>
                 </div>

@@ -15,18 +15,18 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight">My Blog</h1>
             <div class="space-x-6">
-                <a href="/" class="hover:text-blue-300 transition-colors duration-200">Home</a>
+                <a href="{{ route('/') }}" class="hover:text-blue-300 transition-colors duration-200">Home</a>
                 @auth
                     @if (auth()->user()->role == 'admin')
-                        <a href="/admin" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
+                        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
                     @endif
-                    <form action="/logout" method="POST" style="display:inline;">
+                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
                         <button type="submit">Logout</button>
                     </form>
                 @else
-                    <a href="/login" class="hover:text-blue-300 transition-colors duration-200">Login</a>
-                    <a href="/register" class="hover:text-blue-300 transition-colors duration-200">Register</a>
+                    <a href="{{ route('login.form') }}" class="hover:text-blue-300 transition-colors duration-200">Login</a>
+                    <a href="{{ route('register.form') }}" class="hover:text-blue-300 transition-colors duration-200">Register</a>
                 @endauth
             </div>
         </div>

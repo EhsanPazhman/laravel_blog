@@ -10,7 +10,7 @@ use App\Http\Requests\Admin\Categories\UpdateRequest;
 
 class CategoriesController extends Controller
 {
-    public function add()
+    public function create()
     {
         return view('frontend.admin.categories.add-category');
     }
@@ -26,7 +26,7 @@ class CategoriesController extends Controller
         }
         return back()->with('success', 'Ctegory created successfully');
     }
-    public function delete($category_id)
+    public function destroy($category_id)
     {
         $category = Category::find($category_id);
         $category->delete();

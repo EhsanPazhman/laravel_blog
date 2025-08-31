@@ -45,8 +45,7 @@ class AuthController extends Controller
             $request->session()->regenerate(); 
             return redirect('/')->with('success', 'You`re logged in.');
         }
-
-        return back()->with('failed', 'Emain or Password Wrong!.');
+        return back()->with('failed', 'Email or Password Wrong!.');
     }
     public function logout(Request $request)
     {

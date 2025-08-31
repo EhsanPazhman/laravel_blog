@@ -4,13 +4,13 @@
     <!-- Edit Category Form -->
     <div class="flex-grow container mx-auto my-8 px-4 flex flex-wrap -mx-3">
         <div class="container mx-auto my-8 px-4">
-            <a href="/admin"
+            <a href="{{ route('admin.dashboard') }}"
                 class="bg-red-600 hover:bg-green-500 text-white p-3 rounded-lg transition-colors duration-200">Return to home
                 page</a>
             <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-md mx-auto">
             @include('errors.message')
                 <h2 class="text-2xl font-semibold text-blue-300 mb-6">Edit Category</h2>
-                <form action="/admin/categories/{{ $category['id'] }}/update" method="POST">
+                <form action="{{ route('categories.update', $category->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-6">

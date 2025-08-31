@@ -7,7 +7,7 @@
             <div>
                @include('errors.message')
             </div>
-            <form action="/register" method="POST">
+            <form action="{{ route('register') }}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-gray-300">Name</label>

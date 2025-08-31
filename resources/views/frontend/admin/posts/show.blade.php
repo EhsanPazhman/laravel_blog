@@ -23,7 +23,7 @@
             </div>
         @endforeach
         <!-- Comment Form -->
-        <form action="/post/comment/<?= $post->id ?>" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <form action="{{ route('post.comment', $post->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md">
             @csrf
             <textarea name="comment" placeholder="Add your comment..."
                 class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
