@@ -9,10 +9,13 @@ use App\Http\Controllers\Admin\CommentsController;
 use App\Http\Controllers\Admin\CategoriesController;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
+
 Route::prefix('post')->group(function () {
+    Route::get('/search', [PostsController::class, 'search'])->name('post.search');
     Route::get('/{slug}', [PostsController::class, 'show'])->name('post.show');
     Route::post('/comment/{post_id}', [CommentsController::class, 'store'])->name('post.comment');
 });
+
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('categories', CategoriesController::class)->except(['show']);

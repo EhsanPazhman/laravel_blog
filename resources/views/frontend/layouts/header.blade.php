@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Blog - Home')</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,7 +19,8 @@
                 <a href="{{ route('/') }}" class="hover:text-blue-300 transition-colors duration-200">Home</a>
                 @auth
                     @if (auth()->user()->role == 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="hover:text-blue-300 transition-colors duration-200">Admin Panel</a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
@@ -26,7 +28,8 @@
                     </form>
                 @else
                     <a href="{{ route('login.form') }}" class="hover:text-blue-300 transition-colors duration-200">Login</a>
-                    <a href="{{ route('register.form') }}" class="hover:text-blue-300 transition-colors duration-200">Register</a>
+                    <a href="{{ route('register.form') }}"
+                        class="hover:text-blue-300 transition-colors duration-200">Register</a>
                 @endauth
             </div>
         </div>

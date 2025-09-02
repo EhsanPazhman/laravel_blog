@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
+    public function search(Request $request)
+    {
+        $query = $request->get('search');
+        $posts = Post::where('title', 'LIKE', "%{$query}%")->take(5)->get();
+        $html = '';
+        foreach ($posts as $post) {
+            $html .= "<div class='p-2 hover:bg-gray-800 cursor-pointer'>
+                    <a href='" . route('post.show', $post->slug) . "' class='block text-gray-200'>
+                        {$post->title}
+                    </a>
+                  </div>";
+        }
+        return $html ?: "<div class='p-2 text-gray-400'>No results found</div>";
+    }
     public function show($slug)
     {
         $categories = Category::all();
