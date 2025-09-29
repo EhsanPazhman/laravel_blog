@@ -1,7 +1,12 @@
-    <footer class="bg-gradient-to-r from-blue-700 to-purple-600 text-white p-6 mt-8">
-        <div class="container mx-auto text-center">
-            <p class="text-sm">&copy; 2025 Ehsan Pazhman. All rights reserved.</p>
-        </div>
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-blue-900 to-gray-900 text-center text-gray-100 py-4 mt-auto border-2 border-gray-700 rounded-b-none rounded-t-md">
+        &copy; {{ date('Y') }} My Admin Panel. All rights reserved.
     </footer>
-</body>
-</html>
+
+    <script src="{{ asset('js/sidebar.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    </body>
+
+    </html>

@@ -1,12 +1,15 @@
 @extends('frontend.admin.layouts.master')
-@section('title', 'Admin Panel')
+@section('title', 'Admin Dashboard')
 @section('content')
-        <!-- Admin Panel -->
     <div class="container mx-auto my-8 px-4">
-        <h2 class="text-2xl font-semibold text-blue-300 mb-6">Admin Panel</h2>
-        <!-- Manage Posts -->
-        @include('frontend.admin.posts.all')
-        <!-- Manage Categories -->
-        @include('frontend.admin.categories.all')
+        @if ($page === 'dashboard')
+            @include('frontend.admin.layouts.dashboard')
+        @elseif($page === 'posts')
+            @include('frontend.admin.posts.all')
+        @elseif($page === 'categories')
+            @include('frontend.admin.categories.all')
+        @else
+            <p>Page Not Found!</p>
+        @endif
     </div>
 @endsection

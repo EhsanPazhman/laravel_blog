@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Comment;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Category;
-use App\Models\Post;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function dashboard($page = 'dashboard')
     {
         if (!auth::check()) {
             return redirect('login');
@@ -20,6 +22,8 @@ class AdminController extends Controller
         }
         $categories = Category::all();
         $posts = Post::all();
-        return view('frontend.admin.index', compact(['categories', 'posts']));
+        $comments = Comment::all();
+        $users = User::all();
+        return view('frontend.admin.index', compact(['page','categories', 'posts', 'users', 'comments']));
     }
 }

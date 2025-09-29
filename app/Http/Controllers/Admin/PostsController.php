@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
+    public function index()
+    {
+        $posts = Post::all();
+        return view('frontend.admin.posts.all', compact(['posts']));
+    }
     public function search(Request $request)
     {
         $query = $request->get('search');

@@ -10,6 +10,11 @@ use App\Http\Requests\Admin\Categories\UpdateRequest;
 
 class CategoriesController extends Controller
 {
+    public function index()
+    {
+        $categories = Category::all();
+        return view('frontend.admin.categories.all', compact(['categories']));
+    }
     public function create()
     {
         return view('frontend.admin.categories.add-category');
