@@ -8,6 +8,10 @@
             @include('frontend.admin.posts.all')
         @elseif($page === 'categories')
             @include('frontend.admin.categories.all')
+        @elseif($page === 'comments')
+            @include('frontend.admin.comments.all')
+        @elseif($page === 'users')
+            @include('frontend.admin.users.all')
         @else
             <p>Page Not Found!</p>
         @endif

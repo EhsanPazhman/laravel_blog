@@ -10,6 +10,11 @@ use App\Http\Requests\Admin\Comments\StoreRequest;
 
 class CommentsController extends Controller
 {
+    public function index()
+    {
+        $comments = Comment::all();
+        return view('frontend.admin.comments.all', compact(['comments']));
+    }
     public function store(StoreRequest $request, $post_id)
     {
         $admin = User::where('role', 'admin')->first();
