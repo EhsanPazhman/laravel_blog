@@ -12,7 +12,7 @@
 
 <body class="flex flex-col min-h-screen bg-gray-900 text-gray-100 font-inter">
     <!-- Navigation -->
-    <nav class="bg-gradient-to-r from-blue-700 to-purple-600 text-white p-6 shadow-lg">
+    <nav class="bg-gradient-to-r from-blue-700 to-purple-600 text-white p-6 shadow-lg rounded-b-md">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-3xl font-bold tracking-tight">My Blog</h1>
             <div class="space-x-6">

@@ -9,29 +9,26 @@
                         class="md:w-1/4 p-5  absolute mt-2 bg-gray-900 border border-gray-700 rounded-lg overflow-hidden max-h-64 overflow-y-auto transition-all duration-300 opacity-0 pointer-events-none">
                     </div>
                 </form>
-                <form action="index.html" method="GET">
-                    <select name="category"
-                        class="p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <form id="filterForm">
+                    <select name="category" onchange="filterPosts(this.value)"
+                        class="p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer">
                         <option value="">All Categories</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            <option value="{{ $category->slug }}"
+                                {{ request()->is('post/category/' . $category->slug) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
                         @endforeach
                     </select>
                 </form>
             </div>
         </div>
         <script>
-            $('#searchInput').on('keyup', function() {
-                let query = $(this).val();
-                $.ajax({
-                    method: "GET",
-                    url: "{{ route('post.search') }}",
-                    data: {
-                        search: query
-                    },
-                    success: function(response) {
-                        $('#searchResults').html(response).removeClass('opacity-0 pointer-events-none');
-                    }
-                });
-            });
+            function filterPosts(slug) {
+                if (slug) {
+                    window.location.href = `/post/category/${slug}`;
+                } else {
+                    window.location.href = `/`;
+                }
+            }
         </script>

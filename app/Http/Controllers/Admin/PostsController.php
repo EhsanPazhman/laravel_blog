@@ -20,6 +20,19 @@ class PostsController extends Controller
         $posts = Post::all();
         return view('frontend.admin.posts.all', compact(['posts']));
     }
+    public function filter($categorySlug = null)
+{
+    $categories = Category::all();
+
+    $posts = Post::when($categorySlug, function($query, $slug) {
+        return $query->whereHas('category', function($q) use ($slug) {
+            $q->where('slug', $slug);
+        });
+    })->paginate(10);
+
+    return view('frontend.index', compact('posts', 'categories', 'categorySlug'));
+}
+
     public function search(Request $request)
     {
         $query = $request->get('search');
