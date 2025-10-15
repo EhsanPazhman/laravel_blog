@@ -1,4 +1,5 @@
-      <div class="bg-gray-800 p-8 rounded-lg shadow-md">
+            @include('errors.message')
+     <div class="bg-gray-800 p-8 rounded-lg shadow-md">
           <h3 class="text-xl font-semibold text-blue-300 mb-4">Manage Categories</h3>
           <a href="{{ route('admin.categories.create') }}"
               class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg mb-4 inline-block transition-colors duration-200">Add

@@ -10,7 +10,7 @@
             <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto">
                 @include('errors.message')
                 <h2 class="text-2xl font-semibold text-blue-300 mb-6">Edit Post</h2>
-                <form action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data" method="POST">
+                <form action="{{ route('admin.posts.update', $post->id) }}" enctype="multipart/form-data" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-4">

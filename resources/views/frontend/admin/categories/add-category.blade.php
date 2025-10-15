@@ -8,7 +8,7 @@
             <div class="bg-gray-800 p-8 rounded-lg shadow-md max-w-md mx-auto">
             @include('errors.message')
                 <h2 class="text-2xl font-semibold text-blue-300 mb-6">Add New Category</h2>
-                <form action="{{ route('categories.store') }}" method="POST">
+                <form action="{{ route('admin.categories.store') }}" method="POST">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block text-gray-300">Category Name</label>

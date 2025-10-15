@@ -20,7 +20,7 @@
             @empty
         <div class="w-full text-center py-10">
             <p class="text-gray-400 text-lg">
-                😕 No posts found for this category.
+                😕 No posts found.
             </p>
         </div>
             @endforelse

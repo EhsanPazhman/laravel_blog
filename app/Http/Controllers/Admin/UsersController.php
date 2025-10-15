@@ -13,4 +13,10 @@ class UsersController extends Controller
         $users = User::all();
         return view('frontend.admin.users.all', compact(['users']));
     }
+    public function destroy($user_id)
+    {
+        $post = User::find($user_id);
+        $post->delete();
+        return back()->with('success', 'User deleted!');
+    }
 }
