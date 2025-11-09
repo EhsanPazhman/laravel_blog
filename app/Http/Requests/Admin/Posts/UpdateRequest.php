@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
             'category_id' => 'sometimes|exists:categories,id',
             'content'     => 'sometimes|string|min:20',
             'image'       => 'sometimes|image|mimes:png,jpg,jpeg',
+            'tags' => 'nullable|string',
         ];
     }
 }

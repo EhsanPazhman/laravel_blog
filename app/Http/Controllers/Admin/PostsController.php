@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Posts\UpdateRequest;
-use App\Http\Requests\Admin\Posts\StoreRequest;
-use App\Models\Category;
-use App\Models\Comment;
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\Posts\StoreRequest;
+use App\Http\Requests\Admin\Posts\UpdateRequest;
 
 class PostsController extends Controller
 {
@@ -21,17 +22,16 @@ class PostsController extends Controller
         return view('frontend.admin.posts.all', compact(['posts']));
     }
     public function filter($categorySlug = null)
-{
-    $categories = Category::all();
+    {
+        $categories = Category::all();
+        $posts = Post::when($categorySlug, function ($query, $slug) {
+            return $query->whereHas('category', function ($q) use ($slug) {
+                $q->where('slug', $slug);
+            });
+        })->paginate(10);
 
-    $posts = Post::when($categorySlug, function($query, $slug) {
-        return $query->whereHas('category', function($q) use ($slug) {
-            $q->where('slug', $slug);
-        });
-    })->paginate(10);
-
-    return view('frontend.index', compact('posts', 'categories', 'categorySlug'));
-}
+        return view('frontend.index', compact('posts', 'categories', 'categorySlug'));
+    }
 
     public function search(Request $request)
     {
@@ -47,6 +47,14 @@ class PostsController extends Controller
         }
         return $html ?: "<div class='p-2 text-gray-400'>No results found</div>";
     }
+    public function byTag($name)
+    {
+        $categories = Category::all();
+        $tag = Tag::where('name', $name)->firstOrFail();
+        $posts = $tag->posts()->latest()->paginate(10);
+        return view('frontend.index', compact('posts', 'categories'));
+    }
+
     public function show($slug)
     {
         $categories = Category::all();
@@ -62,9 +70,11 @@ class PostsController extends Controller
     public function store(StoreRequest $request)
     {
         $validatedData = $request->validated();
+
         $admin = User::where('role', 'admin')->first();
         $path = 'images/' . $validatedData['image']->getClientOriginalName();
         Storage::disk('public_storage')->put($path, File::get($validatedData['image']));
+
         $createdPost = Post::create([
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
@@ -72,9 +82,33 @@ class PostsController extends Controller
             'category_id' => $validatedData['category_id'],
             'image' => $path,
         ]);
+
         if (!$createdPost) {
             return back()->with('failed', 'Can not create post!');
         }
+
+        $tagsInput = $validatedData['tags'] ?? null;
+
+        if (empty($tagsInput)) {
+            $tagsArray = explode(' ', mb_strtolower($validatedData['title']));
+        } else {
+            $tagsArray = explode(',', $tagsInput);
+        }
+
+        $finalTags = collect();
+
+        foreach ($tagsArray as $tagName) {
+            $tagName = strtolower(trim($tagName));
+            $tagName = preg_replace('/[^a-z0-9\-]/', '', $tagName);
+            if ($tagName === '') continue;
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $finalTags->push($tag->id);
+        }
+
+        if ($finalTags->isNotEmpty()) {
+            $createdPost->tags()->sync($finalTags->unique()->values()->all());
+        }
+
         return back()->with('success', 'Post created successfully.');
     }
     public function edit($post_id)
@@ -96,18 +130,41 @@ class PostsController extends Controller
             $validatedData['image'] = $path;
         }
         $updated = $post->update($validatedData);
-        if (!$updated) {
-            return back()->with('faield', 'Post Not Updated!');
+        $updated = $post->update($validatedData);
+
+        if ($updated) {
+            $tagsInput = $request->input('tags');
+            if (empty($tagsInput)) {
+                $tagsArray = explode(' ', strtolower($request->title));
+            } else {
+                $tagsArray = explode(',', $tagsInput);
+            }
+            $finalTags = collect();
+            foreach ($tagsArray as $tagName) {
+                $tagName = strtolower(trim($tagName));
+                $tagName = preg_replace('/[^a-z0-9\-]/', '', $tagName);
+                if ($tagName === '') continue;
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $finalTags->push($tag->id);
+            }
+            $post->tags()->sync($finalTags->unique());
         }
-        return back()->with('success', 'Post  Updated Successfully.');
+        if (!$updated) {
+            return back()->with('failed', 'Post Not Updated!');
+        }
+        return back()->with('success', 'Post Updated Successfully.');
     }
     public function destroy($post_id)
     {
         $post = Post::find($post_id);
+        if (!$post) {
+            return back()->with('failed', 'Post not found!');
+        }
         if ($post->image && Storage::disk('public_storage')->exists($post->image)) {
             Storage::disk('public_storage')->delete($post->image);
         }
+        $post->tags()->detach();
         $post->delete();
-        return back()->with('success', 'Post deleted!');
+        return back()->with('success', 'Post deleted successfully!');
     }
 }

@@ -10,6 +10,19 @@
             <p class="text-gray-400 text-sm mb-4">{{ $post->category->name }}</p>
             <img src="/{{ $post->image }}" alt="Post Image" class="w-full h-64 object-cover rounded-lg mb-6">
             <p class="text-gray-200 leading-relaxed">{{ $post->content }}</p>
+            <div class="flex flex-wrap gap-2">
+                @forelse ($post->tags as $tag)
+                    @foreach ($post->tags as $tag)
+                        <a href="{{ route('post.byTag', $tag->name) }}"
+                            class="bg-blue-700 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-full transition">
+                            #{{ $tag->name }}
+                        </a>
+                    @endforeach
+                @empty
+                    <span class="text-gray-400 text-sm">No tags</span>
+                @endforelse
+            </div>
+
         </div>
     </div>
 

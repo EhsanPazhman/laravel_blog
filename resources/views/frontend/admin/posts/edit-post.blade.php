@@ -39,6 +39,13 @@
                             class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100">
                         <img src="/{{ $post->image }}" style="width: 100px">
                     </div>
+                    <div class="mb-4">
+                        <label for="tags" class="block text-gray-300">Tags</label>
+                        <input type="text" name="tags" id="tags"
+                            value="{{ $post->tags->pluck('name')->implode(', ') }}"
+                            class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <small class="text-gray-400">Separate tags with commas ,</small>
+                    </div>
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg transition-colors duration-200">Update
                         Post</button>

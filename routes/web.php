@@ -14,8 +14,11 @@ Route::get('/', [HomeController::class, 'index'])->name('/');
 
 // Frontend post routes
 Route::prefix('post')->group(function () {
-    // Filter posts by category (optional slug)
+    // Filter posts by category
     Route::get('/category/{slug?}', [PostsController::class, 'filter']);
+
+    // Filter posts by tags
+    Route::get('/tag/{name}', [PostsController::class, 'byTag'])->name('post.byTag');
 
     // Search posts
     Route::get('/search', [PostsController::class, 'search'])->name('post.search');

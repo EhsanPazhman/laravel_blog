@@ -37,6 +37,12 @@
                     <input type="file" name="image" id="image"
                         class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100">
                 </div>
+                <div class="mb-6">
+                    <label for="tags" class="block text-gray-300">Tags (comma separated)</label>
+                    <input type="text" name="tags" id="tags"
+                        class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100"
+                        placeholder="Example: laravel, php, blog">
+                </div>
                 <button type="submit"
                     class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg transition-colors duration-200">Add
                     Post</button>
