@@ -86,7 +86,7 @@ class PostsController extends Controller
         if (!$createdPost) {
             return back()->with('failed', 'Can not create post!');
         }
-
+        $stopWords = ['and', 'or', 'the', 'a', 'an', 'in', 'on', 'at', 'with', 'for', 'of', 'to', 'by'];
         $tagsInput = $validatedData['tags'] ?? null;
 
         if (empty($tagsInput)) {
@@ -100,13 +100,13 @@ class PostsController extends Controller
         foreach ($tagsArray as $tagName) {
             $tagName = strtolower(trim($tagName));
             $tagName = preg_replace('/[^a-z0-9\-]/', '', $tagName);
-            if ($tagName === '') continue;
+            if ($tagName === '' || in_array($tagName, $stopWords)) continue;
             $tag = Tag::firstOrCreate(['name' => $tagName]);
             $finalTags->push($tag->id);
         }
 
         if ($finalTags->isNotEmpty()) {
-            $createdPost->tags()->sync($finalTags->unique()->values()->all());
+            $createdPost->tags()->sync($finalTags->unique()->take(3));
         }
 
         return back()->with('success', 'Post created successfully.');

@@ -8,9 +8,9 @@
         <div class="bg-gray-800 p-8 rounded-lg shadow-md">
             <h1 class="text-3xl font-bold text-blue-300 mb-4">{{ $post->title }}</h1>
             <p class="text-gray-400 text-sm mb-4">{{ $post->category->name }}</p>
-            <img src="/{{ $post->image }}" alt="Post Image" class="w-full h-64 object-cover rounded-lg mb-6">
+            <img src="/{{ $post->image }}" alt="Post Image" class="w-full h-100 object-cover rounded-lg mb-6">
             <p class="text-gray-200 leading-relaxed">{{ $post->content }}</p>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 mt-6">
                 @forelse ($post->tags as $tag)
                     @foreach ($post->tags as $tag)
                         <a href="{{ route('post.byTag', $tag->name) }}"
