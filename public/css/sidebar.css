@@ -8,12 +8,17 @@
 
 @media (max-width: 767px) {
     #sidebar {
-        top: 4rem; /* زیر هدر در موبایل */
+        top: 4rem;
+        /* below the header on mobile */
         height: calc(100vh - 4rem);
-        z-index: 50; /* بالای overlay */
+        z-index: 50;
+        /* above overlay */
     }
-    #main-nav, #main-content {
-        margin-left: 0 !important; /* جلوگیری از جابه‌جایی در موبایل */
+
+    #main-nav,
+    #main-content {
+        margin-left: 0 !important;
+        /* prevent shifting on mobile */
     }
 }
 
@@ -21,10 +26,12 @@
     #sidebar {
         top: 0;
         height: 100vh;
-        z-index: 30; /* زیر هدر در دسکتاپ */
+        z-index: 30;
+        /* below header on desktop */
     }
 }
 
 #overlay {
-    z-index: 40; /* زیر سایدبار، بالای محتوا */
+    z-index: 40;
+    /* below sidebar, above content */
 }
