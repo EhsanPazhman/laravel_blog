@@ -37,17 +37,32 @@
                             </svg>
                         </a>
 
-                        <!-- TAGS -->
-                        @if ($post->tags && $post->tags->count())
-                            <div class="flex flex-wrap gap-2 mt-5 border-t border-gray-700 pt-3">
-                                @foreach ($post->tags as $tag)
-                                    <span
-                                        class="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">
-                                        #{{ $tag->name }}
-                                    </span>
-                                @endforeach
+                        <!-- TAGS + LIKE -->
+                        <div class="flex items-center justify-between mt-5 border-t border-gray-700 pt-3">
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-2">
+                                @if ($post->tags && $post->tags->count())
+                                    @foreach ($post->tags as $tag)
+                                        <span
+                                            class="text-xs px-2 py-1 rounded-full bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white transition-colors duration-300 cursor-pointer">
+                                            #{{ $tag->name }}
+                                        </span>
+                                    @endforeach
+                                @endif
                             </div>
-                        @endif
+
+                            <!-- Like Button -->
+                            <button
+                                class="like-btn flex items-center gap-1 transition duration-300 {{ auth()->check() && $post->isLikedBy(auth()->user()) ? 'text-pink-500' : 'text-gray-400' }}"
+                                data-post-id="{{ $post->id }}" data-auth="{{ auth()->check() ? '1' : '0' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"
+                                    class="w-5 h-5">
+                                    <path
+                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.657l-6.828-6.829a4 4 0 010-5.656z" />
+                                </svg>
+                                <span class="like-count text-sm">{{ $post->likesCount() }}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

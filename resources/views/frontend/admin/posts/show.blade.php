@@ -8,19 +8,34 @@
         <div class="bg-gray-800 p-8 rounded-lg shadow-md">
             <h1 class="text-3xl font-bold text-blue-300 mb-4">{{ $post->title }}</h1>
             <p class="text-gray-400 text-sm mb-4">{{ $post->category->name }}</p>
-            <img src="/{{ $post->image }}" alt="Post Image" class="w-full h-100 object-cover rounded-lg mb-6">
+            <div class="w-full overflow-hidden rounded-xl mb-6">
+                <img src="/{{ $post->image }}" alt="{{ $post->title }}"
+                    class="w-full max-h-[450px] object-cover object-center rounded-xl transition-transform duration-500 hover:scale-105">
+            </div>
             <p class="text-gray-200 leading-relaxed">{{ $post->content }}</p>
-            <div class="flex flex-wrap gap-2 mt-6">
-                @forelse ($post->tags as $tag)
-                    @foreach ($post->tags as $tag)
+            <div class="flex flex-wrap items-center justify-between mt-6 border-t border-gray-700 pt-4">
+                <!-- TAGS -->
+                <div class="flex flex-wrap gap-2">
+                    @forelse ($post->tags as $tag)
                         <a href="{{ route('post.byTag', $tag->name) }}"
                             class="bg-blue-700 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-full transition">
                             #{{ $tag->name }}
                         </a>
-                    @endforeach
-                @empty
-                    <span class="text-gray-400 text-sm">No tags</span>
-                @endforelse
+                    @empty
+                        <span class="text-gray-400 text-sm">No tags</span>
+                    @endforelse
+                </div>
+
+                <!-- LIKE BUTTON -->
+                <button
+                    class="like-btn flex items-center gap-1 transition duration-300 {{ auth()->check() && $post->isLikedBy(auth()->user()) ? 'text-pink-500' : 'text-gray-400' }}"
+                    data-post-id="{{ $post->id }}" data-auth="{{ auth()->check() ? '1' : '0' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" class="w-5 h-5">
+                        <path
+                            d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18.343l-6.828-6.829a4 4 0 010-5.656z" />
+                    </svg>
+                    <span class="like-count">{{ $post->likesCount() }}</span>
+                </button>
             </div>
 
         </div>

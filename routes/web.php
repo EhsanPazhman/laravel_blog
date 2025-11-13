@@ -23,6 +23,9 @@ Route::prefix('post')->group(function () {
     // Search posts
     Route::get('/search', [PostsController::class, 'search'])->name('post.search');
 
+    // Like / Unlike a post (AJAX)
+    Route::post('/{post}/like', [PostsController::class, 'toggleLike'])->name('post.like');
+
     // Show a single post by slug
     Route::get('/{slug}', [PostsController::class, 'show'])->name('post.show');
 

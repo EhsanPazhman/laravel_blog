@@ -38,4 +38,21 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+    public function likes()
+    {
+        return $this->hasMany(\App\Models\PostLike::class);
+    }
+
+    // helper to count likes (Eloquent has withCount too)
+    public function likesCount()
+    {
+        return $this->likes()->count();
+    }
+
+    // check if a given user liked this post
+    public function isLikedBy($user)
+    {
+        if (!$user) return false;
+        return $this->likes()->where('user_id', $user->id)->exists();
+    }
 }

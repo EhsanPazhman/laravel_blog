@@ -21,6 +21,38 @@ class PostsController extends Controller
         $posts = Post::all();
         return view('frontend.admin.posts.all', compact(['posts']));
     }
+    public function toggleLike(Request $request, Post $post)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // try to delete existing like
+        $existing = $post->likes()->where('user_id', $user->id)->first();
+        if ($existing) {
+            $existing->delete();
+            $liked = false;
+        } else {
+            $post->likes()->create(['user_id' => $user->id]);
+            $liked = true;
+        }
+
+        // return JSON with updated count and state
+        $likesCount = $post->likes()->count();
+
+        return response()->json([
+            'liked' => $liked,
+            'likes_count' => $likesCount,
+        ]);
+    }
+
+    public function trending()
+    {
+        // top 5 posts by likes_count
+        $posts = Post::withCount('likes')->orderByDesc('likes_count')->take(5)->get();
+        return view('frontend.partials.trending', compact('posts'));
+    }
     public function filter($categorySlug = null)
     {
         $categories = Category::all();
