@@ -44,14 +44,10 @@
     <!-- Comments -->
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-semibold text-blue-300 mb-4">Comments</h2>
-        @foreach ($comments as $comment)
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
-                <p class="text-gray-200">{{ $comment->comment }}</p>
-                <p class="text-gray-400 text-sm">By {{ $comment->user->name }} | {{ $comment->created_at }}</p>
-            </div>
-        @endforeach
-        <!-- Comment Form -->
-        <form action="{{ route('post.comment', $post->id) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md">
+
+        <!-- MAIN COMMENT FORM -->
+        <form action="{{ route('post.comment', $post->id) }}" method="POST"
+            class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
             @csrf
             <textarea name="comment" placeholder="Add your comment..."
                 class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
@@ -59,5 +55,48 @@
                 class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg mt-4 transition-colors duration-200">Submit
                 Comment</button>
         </form>
+
+        <!-- LIST OF COMMENTS -->
+        @foreach ($comments->where('parent_id', null) as $comment)
+            @if ($comment->status === 'approved')
+                <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-4">
+                    <p class="text-gray-200">{{ $comment->comment }}</p>
+                    <p class="text-gray-400 text-sm">By {{ $comment->user->name }} | {{ $comment->created_at }}</p>
+
+                    <!-- REPLY BUTTON & FORM -->
+                    <button class="reply-btn text-blue-400 mt-2" data-comment-id="{{ $comment->id }}">Reply</button>
+                    <form action="{{ route('post.comment', $post->id) }}" method="POST" class="reply-form hidden mt-2">
+                        @csrf
+                        <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                        <textarea name="comment" placeholder="Write a reply..."
+                            class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none"></textarea>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg mt-2">Submit
+                            Reply</button>
+                    </form>
+
+                    <!-- LIST OF REPLIES -->
+                    @foreach ($comment->replies as $reply)
+                        @if ($reply->status === 'approved')
+                            <div class="bg-gray-700 p-4 rounded-lg mt-2 ml-6">
+                                <p class="text-gray-200">{{ $reply->comment }}</p>
+                                <p class="text-gray-400 text-sm">By {{ $reply->user->name }} | {{ $reply->created_at }}
+                                </p>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+            @endif
+        @endforeach
     </div>
+
+    <!-- JS TOGGLE REPLY FORM -->
+    <script>
+        document.querySelectorAll('.reply-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const form = btn.nextElementSibling;
+                form.classList.toggle('hidden');
+            });
+        });
+    </script>
+
 @endsection

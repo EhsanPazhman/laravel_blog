@@ -2,57 +2,110 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Comments\StoreRequest;
-use App\Http\Requests\Admin\Comments\UpdateRequest;
 
 class CommentsController extends Controller
 {
+    /**
+     * Show all comments (Admin Panel)
+     */
     public function index()
     {
-        $comments = Comment::all();
-        return view('frontend.admin.comments.all', compact(['comments']));
+        $comments = Comment::with(['user', 'post'])->latest()->get();
+        return view('frontend.admin.comments.all', compact('comments'));
     }
-    public function store(StoreRequest $request, $post_id)
+
+    /**
+     * Store new comment (Frontend)
+     */
+    public function store(Request $request, $post_id)
     {
-        $admin = User::where('role', 'admin')->first();
-        $valdatedData = $request->validated();
-        $createdComment = Comment::create([
-            'comment' => $valdatedData['comment'],
-            'user_id' => $admin->id,
-            'post_id' => $post_id
-        ]);
-        if (!$createdComment) {
-            return back()->with('failed', 'Comment add hasbeen failed!');
+        if (!auth()->check()) {
+            return redirect()->route('login')
+                ->with('failed', 'Please login to comment.');
         }
-        return back()->with('success', 'Comment added successfully.');
+
+        $request->validate([
+            'comment' => 'required|string|max:5000',
+            'parent_id' => 'nullable|exists:comments,id'
+        ]);
+
+        Comment::create([
+            'comment' => $request->comment,
+            'user_id' => auth()->id(),
+            'post_id' => $post_id,
+            'parent_id' => $request->parent_id,
+            'status'  => 'pending'
+        ]);
+
+        return back()->with('success', 'Your comment is submitted and waiting for approval.');
     }
-    public function edit($comment_id)
+
+    /**
+     * Update status (approve / reject)
+     */
+    public function updateStatus(Request $request, $id)
     {
-        $comment = Comment::find($comment_id);
-        return view('frontend.admin.comments.edit-comment',compact('comment'));
-   }
-   public function update(UpdateRequest $request, $comment_id)
-   {
-       $comment = Comment::find($comment_id);
-       $valdatedData = $request->validated();
-       $comment->update(
-        [
-            'comment' => $valdatedData['comment']
-        ]
-       );
-       if (!$comment) {
-        return back()->with('failed', 'Comment does not updated!');
-       }
-       return back()->with('success', 'Comment updated successfully.');
-   }
-    public function destroy($comment_id)
+        $request->validate([
+            'status' => 'required|in:approved,rejected,pending'
+        ]);
+
+        $comment = Comment::findOrFail($id);
+
+        $data = [
+            'status' => $request->status
+        ];
+
+        if ($request->status === 'approved') {
+            $data['approved_by'] = auth()->id();
+            $data['approved_at'] = now();
+        } else {
+            // Reset approval info if rejected/pending
+            $data['approved_by'] = null;
+            $data['approved_at'] = null;
+        }
+
+        $comment->update($data);
+
+        return back()->with('success', 'Comment status updated.');
+    }
+
+    /**
+     * Edit Form
+     */
+    public function edit($id)
     {
-        $post = Comment::find($comment_id);
-        $post->delete();
+        $comment = Comment::findOrFail($id);
+        return view('frontend.admin.comments.edit-comment', compact('comment'));
+    }
+
+    /**
+     * Update Comment Text
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'comment' => 'required|string|max:5000'
+        ]);
+
+        $comment = Comment::findOrFail($id);
+
+        $comment->update([
+            'comment' => $request->comment
+        ]);
+
+        return back()->with('success', 'Comment updated successfully.');
+    }
+
+    /**
+     * Delete Comment
+     */
+    public function destroy($id)
+    {
+        Comment::findOrFail($id)->delete();
+
         return back()->with('success', 'Comment deleted!');
     }
 }
