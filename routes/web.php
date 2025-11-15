@@ -56,12 +56,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Resource routes for Comments (CRUD)
     Route::resource('comments', CommentsController::class)->except(['show']);
 
+    // Resource routes for Users
+    Route::resource('users', UsersController::class)->except(['show']);
+
     // UPDATE status of a comment (NEW)
     Route::patch('comments/{comment}/status', [CommentsController::class, 'updateStatus'])
         ->name('comments.updateStatus');
-
-    // Resource routes for Users
-    Route::resource('users', UsersController::class)->except(['show']);
 });
 
 // Authentication routes

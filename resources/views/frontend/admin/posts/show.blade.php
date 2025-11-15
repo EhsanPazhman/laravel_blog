@@ -8,9 +8,9 @@
         <div class="bg-gray-800 p-8 rounded-lg shadow-md">
             <h1 class="text-3xl font-bold text-blue-300 mb-4">{{ $post->title }}</h1>
             <p class="text-gray-400 text-sm mb-4">{{ $post->category->name }}</p>
-            <div class="w-full overflow-hidden rounded-xl mb-6">
+            <div class="overflow-hidden rounded-2xl mb-6">
                 <img src="/{{ $post->image }}" alt="{{ $post->title }}"
-                    class="w-full max-h-[450px] object-cover object-center rounded-xl transition-transform duration-500 hover:scale-105">
+                    class="w-full h-60 object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <p class="text-gray-200 leading-relaxed">{{ $post->content }}</p>
             <div class="flex flex-wrap items-center justify-between mt-6 border-t border-gray-700 pt-4">
@@ -43,7 +43,6 @@
 
     <!-- Comments -->
     <div class="container mx-auto px-4">
-        <h2 class="text-2xl font-semibold text-blue-300 mb-4">Comments</h2>
 
         <!-- MAIN COMMENT FORM -->
         <form action="{{ route('post.comment', $post->id) }}" method="POST"
@@ -52,16 +51,21 @@
             <textarea name="comment" placeholder="Add your comment..."
                 class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
             <button type="submit"
-                class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg mt-4 transition-colors duration-200">Submit
-                Comment</button>
+                class="bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg mt-4 transition-colors duration-200">
+                Submit Comment
+            </button>
         </form>
 
         <!-- LIST OF COMMENTS -->
-        @foreach ($comments->where('parent_id', null) as $comment)
+        <h2 class="text-2xl font-semibold text-blue-300 mb-4">Comments</h2>
+
+        <!-- Paginated top-level comments only -->
+        @foreach ($comments as $comment)
             @if ($comment->status === 'approved')
                 <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-4">
                     <p class="text-gray-200">{{ $comment->comment }}</p>
-                    <p class="text-gray-400 text-sm">By {{ $comment->user->name }} | {{ $comment->created_at }}</p>
+                    <p class="text-gray-400 text-sm">By {{ $comment->user->name }} |
+                        {{ $comment->created_at->diffForHumans() }}</p>
 
                     <!-- REPLY BUTTON & FORM -->
                     <button class="reply-btn text-blue-400 mt-2" data-comment-id="{{ $comment->id }}">Reply</button>
@@ -75,18 +79,21 @@
                     </form>
 
                     <!-- LIST OF REPLIES -->
-                    @foreach ($comment->replies as $reply)
-                        @if ($reply->status === 'approved')
-                            <div class="bg-gray-700 p-4 rounded-lg mt-2 ml-6">
-                                <p class="text-gray-200">{{ $reply->comment }}</p>
-                                <p class="text-gray-400 text-sm">By {{ $reply->user->name }} | {{ $reply->created_at }}
-                                </p>
-                            </div>
-                        @endif
+                    @foreach ($comment->replies->where('status', 'approved') as $reply)
+                        <div class="bg-gray-700 p-4 rounded-lg mt-2 ml-6">
+                            <p class="text-gray-200">{{ $reply->comment }}</p>
+                            <p class="text-gray-400 text-sm">By {{ $reply->user->name }} |
+                                {{ $reply->created_at->diffForHumans() }}</p>
+                        </div>
                     @endforeach
                 </div>
             @endif
         @endforeach
+
+        <!-- PAGINATION LINKS -->
+        <div class="mt-4">
+            {{ $comments->links() }}
+        </div>
     </div>
 
     <!-- JS TOGGLE REPLY FORM -->

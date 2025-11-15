@@ -9,10 +9,10 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-        public function index()
+    public function index()
     {
         $categories = Category::all();
-        $posts = Post::all();
+        $posts = Post::latest()->simplePaginate(20); // 20 posts per page
         return view('frontend.index', compact(['categories', 'posts']));
     }
 }

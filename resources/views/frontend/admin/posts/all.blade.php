@@ -17,7 +17,7 @@
                        </tr>
                    </thead>
                    <tbody>
-                       @foreach ($posts as $post)
+                       @foreach ($AllPosts as $post)
                            <tr class="hover:bg-gray-700 transition-colors duration-200">
                                <td class="p-3">{{ $post->title }}</td>
                                <td class="p-3">{{ substr($post->content, 0, 10) }}</td>
@@ -41,4 +41,8 @@
                        @endforeach
                    </tbody>
                </table>
+               <div class="mt-4">
+                   {{ $AllPosts->links() }}
+               </div>
+
            </div>

@@ -4,27 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 
 class CommentsController extends Controller
 {
     /**
-     * Show all comments (Admin Panel)
-     */
-    public function index()
-    {
-        $comments = Comment::with(['user', 'post'])->latest()->get();
-        return view('frontend.admin.comments.all', compact('comments'));
-    }
-
-    /**
-     * Store new comment (Frontend)
+     * Store a new comment from the frontend.
      */
     public function store(Request $request, $post_id)
     {
-        if (!auth()->check()) {
-            return redirect()->route('login')
-                ->with('failed', 'Please login to comment.');
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('failed', 'Please login to comment.');
         }
 
         $request->validate([
@@ -34,7 +25,7 @@ class CommentsController extends Controller
 
         Comment::create([
             'comment' => $request->comment,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'post_id' => $post_id,
             'parent_id' => $request->parent_id,
             'status'  => 'pending'
@@ -44,7 +35,7 @@ class CommentsController extends Controller
     }
 
     /**
-     * Update status (approve / reject)
+     * Update the status of a comment (approve/reject/pending)
      */
     public function updateStatus(Request $request, $id)
     {
@@ -54,15 +45,12 @@ class CommentsController extends Controller
 
         $comment = Comment::findOrFail($id);
 
-        $data = [
-            'status' => $request->status
-        ];
+        $data = ['status' => $request->status];
 
         if ($request->status === 'approved') {
-            $data['approved_by'] = auth()->id();
+            $data['approved_by'] = Auth::id();
             $data['approved_at'] = now();
         } else {
-            // Reset approval info if rejected/pending
             $data['approved_by'] = null;
             $data['approved_at'] = null;
         }
@@ -73,7 +61,7 @@ class CommentsController extends Controller
     }
 
     /**
-     * Edit Form
+     * Show the form to edit a comment
      */
     public function edit($id)
     {
@@ -82,7 +70,7 @@ class CommentsController extends Controller
     }
 
     /**
-     * Update Comment Text
+     * Update a comment
      */
     public function update(Request $request, $id)
     {
@@ -91,20 +79,18 @@ class CommentsController extends Controller
         ]);
 
         $comment = Comment::findOrFail($id);
-
-        $comment->update([
-            'comment' => $request->comment
-        ]);
+        $comment->update(['comment' => $request->comment]);
 
         return back()->with('success', 'Comment updated successfully.');
     }
 
     /**
-     * Delete Comment
+     * Delete a comment
      */
     public function destroy($id)
     {
-        Comment::findOrFail($id)->delete();
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
 
         return back()->with('success', 'Comment deleted!');
     }
